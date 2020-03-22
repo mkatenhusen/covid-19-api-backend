@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import socket
+
+import sentry_sdk
 from django.utils.translation import ugettext_lazy as _
 import dj_database_url
+from sentry_sdk.integrations.django import DjangoIntegration
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -152,6 +155,17 @@ USE_TZ = True
 #################################
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+
+#################################
+
+# Sentry
+
+#################################
+sentry_sdk.init(
+    dsn=os.environ.get("SENTRY_DSN", ""),
+    integrations=[DjangoIntegration()]
+)
 
 
 #################################
