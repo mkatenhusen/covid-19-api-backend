@@ -10,6 +10,8 @@ class DailyCase(models.Model):
     immune_total = models.IntegerField(null=True, blank=True)
     intensive_total = models.IntegerField(null=True, blank=True)
     quarantine_total = models.IntegerField(null=True, blank=True)
+    infected_per_100k = models.FloatField(null=True, blank=True)
+    death_rate = models.FloatField(null=True, blank=True)
 
     date_day = models.DateField()
 

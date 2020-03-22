@@ -8,7 +8,7 @@ class DailyCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DailyCase
         fields = ("infected_total", "deaths_total", "intensive_total", "immune_total", "date_day", "quarantine_total",
-                  "last_updated")
+                  "infected_per_100k", "death_rate", "last_updated")
 
     def create(self, validated_data):
         county = County.objects.get(slug=self.context["county__slug"])
@@ -24,6 +24,9 @@ class DailyCaseSerializer(serializers.ModelSerializer):
                 daily_cases.healed_total = validated_data.get("healed_total")
                 daily_cases.intensive_total = validated_data.get("intensive_total")
                 daily_cases.immune_total = validated_data.get("immune_total")
+                daily_cases.quarantine_total = validated_data.get("quarantine_total")
+                daily_cases.infected_per_100k = validated_data.get("infected_per_100k")
+                daily_cases.death_rate = validated_data.get("death_rate")
                 daily_cases.last_updated = validated_data.get("last_updated")
                 daily_cases.save()
                 return daily_cases
@@ -35,7 +38,10 @@ class DailyCaseSerializer(serializers.ModelSerializer):
                                             healed_total=validated_data.get("healed_total"),
                                             immune_total=validated_data.get("immune_total"),
                                             deaths_total=validated_data.get("deaths_total"),
-                                            intensive_total=validated_data.get("intensive_total")
+                                            intensive_total=validated_data.get("intensive_total"),
+                                            quarantine_total=validated_data.get("quarantine_total"),
+                                            infected_per_100k=validated_data.get("infected_per_100k"),
+                                            death_rate=validated_data.get("death_rate"),
                                             )
 
 
