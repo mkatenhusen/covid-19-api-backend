@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from covid19_backend.daily_data.models import DailyCase, GenderAgeRelation, Age
+from covid19_backend.daily_data.models import DailyCase, GenderAgeRelation, Age, Gender
 
 
 @admin.register(DailyCase)
@@ -28,4 +28,9 @@ class GenderAgeRelationAdmin(admin.ModelAdmin):
 @admin.register(Age)
 class AgeAdmin(admin.ModelAdmin):
     list_display = ("min", "max",)
+
+
+@admin.register(Gender)
+class GenderAdmin(admin.ModelAdmin):
+    list_display = ("name",)
 
