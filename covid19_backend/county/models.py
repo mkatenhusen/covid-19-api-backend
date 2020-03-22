@@ -16,7 +16,10 @@ class County(models.Model):
     description = models.CharField(max_length=200, blank=True, null=True,
                                    help_text=_("Typ der Gemeinde, bspw. kreisfreie Stadt"))
 
-    population = models.BigIntegerField()
-    population_density = models.BigIntegerField(blank=True, null=True)
+    population = models.BigIntegerField(blank=True, null=True)
+    population_density = models.FloatField(blank=True, null=True)
 
     state = models.ForeignKey(to=State, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("slug", "name", "state", "ags")
