@@ -15,7 +15,8 @@ class CountySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = County
-        fields = ("name", "slug", "ags", "state", "alternative_name", "description", "population", "population_density")
+        fields = ("name", "ags", "state", "bez", "gen", "population", "population_density_km", "population_male",
+                  "population_female")
 
     def create(self, validated_data):
         try:
