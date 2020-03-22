@@ -23,4 +23,4 @@ class County(models.Model):
     state = models.ForeignKey(to=State, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ("slug", "name", "state", "ags")
+        unique_together = ("name", "state", "ags")

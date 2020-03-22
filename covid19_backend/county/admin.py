@@ -10,7 +10,7 @@ class StateAdmin(admin.ModelAdmin):
 
 @admin.register(County)
 class CountyAdmin(admin.ModelAdmin):
-    list_display = ("name", "slug", "ags", "get_state")
+    list_display = ("name", "ags", "get_state")
 
     def get_state(self, obj: County):
         return obj.state.name

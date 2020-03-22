@@ -19,7 +19,7 @@ class GenderAgeRelationAdmin(admin.ModelAdmin):
         return obj.gender.name
 
     def age_group(self, obj: GenderAgeRelation):
-        return obj.age.age_string
+        return obj.age.name
 
     def get_county(self, obj: GenderAgeRelation):
         return obj.county.name
@@ -27,7 +27,7 @@ class GenderAgeRelationAdmin(admin.ModelAdmin):
 
 @admin.register(Age)
 class AgeAdmin(admin.ModelAdmin):
-    list_display = ("min", "max",)
+    list_display = ("name",)
 
 
 @admin.register(Gender)
