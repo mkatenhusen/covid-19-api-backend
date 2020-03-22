@@ -12,7 +12,7 @@ class State(models.Model):
 
 class County(models.Model):
     name = models.CharField(max_length=90, unique=True)
-    ags = models.CharField(unique=True, help_text=_("Amtlicher Gemeindeschlüssel"))
+    ags = models.CharField(unique=True, help_text=_("Amtlicher Gemeindeschlüssel"), max_length=10)
 
     gen = models.CharField(max_length=90, blank=True, null=True, help_text=_("Kurzbezeichnung"))
     bez = models.CharField(max_length=200, blank=True, null=True,
