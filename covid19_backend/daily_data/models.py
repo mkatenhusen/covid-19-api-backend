@@ -5,10 +5,11 @@ from covid19_backend.county.models import County
 
 class DailyCase(models.Model):
     infected_total = models.IntegerField()
-    deaths_total = models.IntegerField()
+    deaths_total = models.IntegerField(null=True, blank=True)
     healed_total = models.IntegerField(null=True, blank=True)
     immune_total = models.IntegerField(null=True, blank=True)
     intensive_total = models.IntegerField(null=True, blank=True)
+    quarantine_total = models.IntegerField(null=True, blank=True)
 
     date_day = models.DateField()
 
@@ -18,18 +19,7 @@ class DailyCase(models.Model):
 
 
 class Age(models.Model):
-    min = models.SmallIntegerField()
-    max = models.SmallIntegerField()
-
-    @property
-    def age_string(self):
-        return str(self.min) + "-" + str(self.max)
-
-    @age_string.setter
-    def age_string(self, value):
-        split = value.split("-")
-        self.min = split[0]
-        self.max = split[1]
+    name = models.CharField(max_length=5, unique=True)
 
 
 class Gender(models.Model):

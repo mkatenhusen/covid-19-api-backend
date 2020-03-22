@@ -7,7 +7,8 @@ from covid19_backend.daily_data.models import GenderAgeRelation, DailyCase, Age,
 class DailyCaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = DailyCase
-        fields = ("infected_total", "deaths_total", "intensive_total", "immune_total", "date_day", "last_updated")
+        fields = ("infected_total", "deaths_total", "intensive_total", "immune_total", "date_day", "quarantine_total",
+                  "last_updated")
 
     def create(self, validated_data):
         county = County.objects.get(slug=self.context["county__slug"])
@@ -40,20 +41,18 @@ class DailyCaseSerializer(serializers.ModelSerializer):
 
 class GenderAgeSerializer(serializers.ModelSerializer):
     gender = serializers.CharField(source="gender.name")
-    age_min = serializers.IntegerField(source="age.min")
-    age_max = serializers.IntegerField(source="age.max")
+    age_group = serializers.CharField(source="age.name")
 
     class Meta:
         model = GenderAgeRelation
-        fields = ["count", "gender", "age_min", "age_max", "date_day", "last_updated"]
+        fields = ["count", "gender", "age_group", "date_day", "last_updated"]
 
     def create(self, validated_data):
-        county = County.objects.get(slug=self.context["county__slug"])
+        county = County.objects.get(ags=self.context["county__ags"])
         try:
             latest_gender_age_relation: GenderAgeRelation = \
                 GenderAgeRelation.objects.get(gender__name=validated_data.get("gender").get("name"),
-                                              age__min=validated_data.get("age").get("min"),
-                                              age__max=validated_data.get("age").get("max"),
+                                              age__name=validated_data.get("age").get("name"),
                                               date_day=validated_data.get("date_day"),
                                               county=county)
             if latest_gender_age_relation.last_updated > validated_data.get("last_updated"):
@@ -64,7 +63,7 @@ class GenderAgeSerializer(serializers.ModelSerializer):
                 latest_gender_age_relation.save()
                 return latest_gender_age_relation
         except GenderAgeRelation.DoesNotExist:
-            age = Age.objects.get(min=validated_data.get("age").get("min"), max=validated_data.get("age").get("max"))
+            age = Age.objects.get(name=validated_data.get("age").get("name"))
             gender = Gender.objects.get(name=validated_data.get("gender").get("name"))
             return GenderAgeRelation.objects.create(age=age,
                                                     gender=gender,
