@@ -10,7 +10,7 @@ from covid19_backend.county.serializers import CountySerializer
 class CountyView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = CountySerializer
     queryset = County.objects.all()
-    lookup_field = "slug"
+    lookup_field = "ags"
     authentication_classes = [TokenAuthentication]
 
     @permission_classes([IsAuthenticated])
