@@ -19,13 +19,22 @@ class DailyCase(models.Model):
 
     county = models.ForeignKey(to=County, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ("date_day", "county")
+
 
 class Age(models.Model):
     name = models.CharField(max_length=5, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Gender(models.Model):
     name = models.CharField(max_length=6, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class GenderAgeRelation(models.Model):
