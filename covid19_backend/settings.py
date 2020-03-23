@@ -45,7 +45,8 @@ THIRD_PARTY_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
-    'gunicorn'
+    'gunicorn',
+    'drf_yasg'
 ]
 
 OWN_APPS = [
@@ -167,6 +168,23 @@ sentry_sdk.init(
     dsn=os.environ.get("SENTRY_DSN", ""),
     integrations=[DjangoIntegration()]
 )
+
+
+################################
+
+# Swagger
+
+################################
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 
 #################################
