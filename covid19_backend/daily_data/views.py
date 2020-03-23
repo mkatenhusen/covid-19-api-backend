@@ -25,6 +25,9 @@ class DailyCasesView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
             queryset = DailyCase.objects.filter(**self.kwargs).order_by("-date_day")
         return queryset
 
+    def get_serializer_context(self):
+        return self.kwargs
+
     @permission_classes([IsAuthenticated])
     def create(self, request, *args, **kwargs):
         return super().create(request, args, kwargs)
