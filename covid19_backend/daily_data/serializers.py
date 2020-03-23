@@ -11,7 +11,7 @@ class DailyCaseSerializer(serializers.ModelSerializer):
                   "infected_per_100k", "death_rate", "last_updated")
 
     def create(self, validated_data):
-        county = County.objects.get(slug=self.context["county__slug"])
+        county = County.objects.get(slug=self.context["county__ags"])
         try:
             daily_cases: DailyCase = \
                 DailyCase.objects.get(county=county,
