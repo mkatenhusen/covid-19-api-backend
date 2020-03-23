@@ -1,22 +1,25 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import permission_classes, action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from covid19_backend.daily_data.filters import DayDateFilter
+from covid19_backend.county.mixins import MixedPermissionsViewSetMixin
 from covid19_backend.daily_data.models import DailyCase, GenderAgeRelation, Gender, Age
 from covid19_backend.daily_data.serializers import DailyCaseSerializer, GenderAgeSerializer, GenderSerializer, \
     AgeSerializer
 
 
-class DailyCasesView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class DailyCasesView(MixedPermissionsViewSetMixin, mixins.ListModelMixin,
+                     mixins.RetrieveModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = DailyCaseSerializer
     lookup_field = "date_day"
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["date_day"]
     authentication_classes = [TokenAuthentication]
+    permission_classes_by_action = {'create': [IsAuthenticated, IsAdminUser]}
+
 
     def get_queryset(self):
         if not self.kwargs:
@@ -28,10 +31,6 @@ class DailyCasesView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
     def get_serializer_context(self):
         return self.kwargs
 
-    @permission_classes([IsAuthenticated])
-    def create(self, request, *args, **kwargs):
-        return super().create(request, args, kwargs)
-
     @action(detail=False, url_path="latest", methods=["get"])
     def latest(self, request, *args, **kwargs):
         latest_case = DailyCase.objects.filter(**self.kwargs).order_by("-date_day")
@@ -42,11 +41,13 @@ class DailyCasesView(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.Cr
             return Response({})
 
 
-class GenderAgeView(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
+class GenderAgeView(MixedPermissionsViewSetMixin, mixins.ListModelMixin, mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
     serializer_class = GenderAgeSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["date_day"]
     authentication_classes = [TokenAuthentication]
+    permission_classes_by_action = {'create': [IsAuthenticated, IsAdminUser]}
 
     def get_serializer_context(self):
         return self.kwargs
@@ -57,10 +58,6 @@ class GenderAgeView(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.Gen
         else:
             queryset = GenderAgeRelation.objects.filter(**self.kwargs).order_by("-date_day")
         return queryset
-
-    @permission_classes([IsAuthenticated])
-    def create(self, request, *args, **kwargs):
-        return super().create(request, args, kwargs)
 
     @action(detail=False, url_path="latest", methods=["get"])
     def latest(self, request, *args, **kwargs):
