@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import mixins, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
@@ -20,7 +21,6 @@ class DailyCasesView(MixedPermissionsViewSetMixin, mixins.ListModelMixin,
     authentication_classes = [TokenAuthentication]
     permission_classes_by_action = {'create': [IsAuthenticated, IsAdminUser]}
 
-
     def get_queryset(self):
         if not self.kwargs:
             queryset = DailyCase.objects.all()
@@ -30,6 +30,10 @@ class DailyCasesView(MixedPermissionsViewSetMixin, mixins.ListModelMixin,
 
     def get_serializer_context(self):
         return self.kwargs
+
+    @swagger_auto_schema(security=[{"api_key": []}])
+    def create(self, request, *args, **kwargs):
+        return super().create(request, args, kwargs)
 
     @action(detail=False, url_path="latest", methods=["get"])
     def latest(self, request, *args, **kwargs):
@@ -58,6 +62,10 @@ class GenderAgeView(MixedPermissionsViewSetMixin, mixins.ListModelMixin, mixins.
         else:
             queryset = GenderAgeRelation.objects.filter(**self.kwargs).order_by("-date_day")
         return queryset
+
+    @swagger_auto_schema(security=[{"api_key": []}])
+    def create(self, request, *args, **kwargs):
+        return super().create(request, args, kwargs)
 
     @action(detail=False, url_path="latest", methods=["get"])
     def latest(self, request, *args, **kwargs):

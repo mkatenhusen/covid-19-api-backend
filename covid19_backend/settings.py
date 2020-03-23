@@ -181,9 +181,11 @@ SWAGGER_SETTINGS = {
         'api_key': {
             'type': 'apiKey',
             'in': 'header',
-            'name': 'Authorization'
+            'name': 'Authorization',
+            'description': 'An API key/ token is ONLY needed to do POST requests. Ask an admin for a key'
         }
     },
+    'SECURITY_REQUIREMENTS': []
 }
 
 
