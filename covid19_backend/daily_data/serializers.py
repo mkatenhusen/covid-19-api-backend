@@ -51,7 +51,7 @@ class GenderAgeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GenderAgeRelation
-        fields = ["count", "gender", "age_group", "date_day", "last_updated"]
+        fields = ["infected_total", "deaths_total", "gender", "age_group", "date_day", "last_updated"]
 
     def create(self, validated_data):
         county = County.objects.get(ags=self.context["county__ags"])
@@ -64,7 +64,8 @@ class GenderAgeSerializer(serializers.ModelSerializer):
             if latest_gender_age_relation.last_updated > validated_data.get("last_updated"):
                 raise serializers.ValidationError({"message": "Newer dataset already saved"})
             else:
-                latest_gender_age_relation.count = validated_data.get("count")
+                latest_gender_age_relation.infected_total = validated_data.get("infected_total")
+                latest_gender_age_relation.deaths_total = validated_data.get("deaths_total")
                 latest_gender_age_relation.last_updated = validated_data.get("last_updated")
                 latest_gender_age_relation.save()
                 return latest_gender_age_relation
@@ -74,7 +75,8 @@ class GenderAgeSerializer(serializers.ModelSerializer):
             return GenderAgeRelation.objects.create(age=age,
                                                     gender=gender,
                                                     county=county,
-                                                    count=validated_data.get("count"),
+                                                    infected_total=validated_data.get("infected_total"),
+                                                    deaths_total=validated_data.get("deaths_total"),
                                                     last_updated=validated_data.get("last_updated"),
                                                     date_day=validated_data.get("date_day"))
 
