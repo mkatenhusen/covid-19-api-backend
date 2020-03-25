@@ -46,7 +46,8 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'gunicorn',
-    'drf_yasg'
+    'drf_yasg',
+    'corsheaders'
 ]
 
 OWN_APPS = [
@@ -57,6 +58,7 @@ OWN_APPS = [
 INSTALLED_APPS = THIRD_PARTY_APPS + OWN_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,6 +127,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+#################################
+
+# CORS
+
+#################################
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 #################################
