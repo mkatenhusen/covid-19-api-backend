@@ -41,7 +41,8 @@ class GenderAgeRelation(models.Model):
     county = models.ForeignKey(to=County, on_delete=models.CASCADE)
     date_day = models.DateField()
 
-    count = models.IntegerField()
+    infected_total = models.IntegerField(null=True, blank=True)
+    deaths_total = models.IntegerField(null=True, blank=True)
 
     age = models.ForeignKey(to=Age, on_delete=models.CASCADE)
     gender = models.ForeignKey(to=Gender, on_delete=models.CASCADE)
