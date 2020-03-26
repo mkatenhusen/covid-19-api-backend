@@ -13,9 +13,9 @@ class DailyCaseAdmin(admin.ModelAdmin):
 
 @admin.register(GenderAgeRelation)
 class GenderAgeRelationAdmin(admin.ModelAdmin):
-    list_display = ("date_day", "gender_count", "age_group", "get_county")
+    list_display = ("infected_total", "date_day", "gender_name", "age_group", "get_county")
 
-    def gender_count(self, obj: GenderAgeRelation):
+    def gender_name(self, obj: GenderAgeRelation):
         return obj.gender.name
 
     def age_group(self, obj: GenderAgeRelation):
