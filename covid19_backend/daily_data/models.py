@@ -24,14 +24,14 @@ class DailyCase(models.Model):
 
 
 class Age(models.Model):
-    name = models.CharField(max_length=5, unique=True)
+    name = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Gender(models.Model):
-    name = models.CharField(max_length=6, unique=True)
+    name = models.CharField(max_length=10, unique=True)
 
     def __str__(self):
         return self.name
