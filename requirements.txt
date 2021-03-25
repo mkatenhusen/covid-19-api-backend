@@ -9,7 +9,7 @@ drf-nested-routers==0.91
 drf-yasg==1.17.1
 gunicorn==20.0.4
 psycopg2-binary==2.8.4
-pyyaml==5.3.1
+pyyaml==5.4
 sentry-sdk==0.5.5
 requests==2.23.0
 uritemplate==3.0.1
